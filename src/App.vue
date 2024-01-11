@@ -11,14 +11,14 @@ import { useCartStore } from "@/stores/CartStore.js";
 
 const { products } = storeToRefs(useProductStore());
 const productStore = useProductStore();
-const CartStore = useCartStore();
+const cartStore = useCartStore();
 
-const addToCart = (count, product) => {
+/* const addToCart = (count, product) => {
     count = parseInt(count);
     for (let index = 0; index < count; index++) {
         CartStore.items.push(product);
     }
-};
+};*/
 productStore.fill();
 </script>
 
@@ -30,7 +30,7 @@ productStore.fill();
                 v-for="product in productStore.products"
                 :key="product.name"
                 :product="product"
-                @addToCart="addToCart($event, product)"
+                @addToCart="cartStore.addItems($event, product)"
             />
             <!-- Definim la const productStore i remplacem aquesta al v-for del ProductCart-->
         </ul>
