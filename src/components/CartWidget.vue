@@ -35,7 +35,7 @@ const active = ref(false);
                 <div class="flex justify-end">
                     <AppButton
                         class="secondary mr-2"
-                        @click="cartStore.$reset()"
+                        @click="cartStore.clearCart()"
                         >Clear Cart</AppButton
                     >
                     <AppButton

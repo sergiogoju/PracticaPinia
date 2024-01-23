@@ -32,6 +32,9 @@ export const useCartStore = defineStore("CartStore", {
                 `${authUserStore.username} just bought ${this.count} items at a total of ${this.totalPrice}$`
             );
         },
+        clearCart() {
+            this.items = [];
+        },
     },
     getters: {
         /* count() {
