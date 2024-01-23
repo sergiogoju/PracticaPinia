@@ -20,6 +20,37 @@ const cartStore = useCartStore();
     }
 };*/
 productStore.fill();
+
+//rebrà una callback function que rebrà unes opcions
+//name: nom de l'acció
+//store instace en el nostre cas cartStore
+//args : arguments passats a l'action que son count i product
+//també afegim un after hook que permet executar qualsevol
+//Cosa després que l'acció retorni i resolgui,
+//onError hook per saber quan passa una excepció o falla i fer nosaltres alguna acció
+/* cartStore.$onAction(({ name, store, args, after, onError }) => {
+    if (name === "addItems") {
+        after(() => {
+            console.log(args[0]);
+        });
+    }
+}); */
+
+/* cartStore.$onAction(({ name, store, args, after, onError }) => {
+    if (name === "addItems") {
+        after(() => {
+            console.log(args[0], args[1].name);
+        });
+        onError((error) => {
+            console.log("Hello error:", error.message);
+        });
+    }
+}); */
+
+cartStore.$subscribe((mutation, state) => {
+    console.log({ mutation });
+    console.log({ state });
+});
 </script>
 
 <template>
