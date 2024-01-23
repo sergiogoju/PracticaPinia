@@ -8,19 +8,15 @@ import { storeToRefs } from "pinia";
 // const productStore = useProductStore()
 import { useCartStore } from "@/stores/CartStore.js";
 // useProductStore();
-import { ref, reactive } from "vue";
+//import { ref, reactive } from "vue";
 
-const { products } = storeToRefs(useProductStore());
 const productStore = useProductStore();
 const cartStore = useCartStore();
-/* const history=reactive([]) */
+/* const history = reactive([]);
+const future = reactive([]);
+const doingHistory = ref(false);*/
 
-/* const addToCart = (count, product) => {
-    count = parseInt(count);
-    for (let index = 0; index < count; index++) {
-        CartStore.items.push(product);
-    }
-};*/
+const { products } = storeToRefs(useProductStore());
 productStore.fill();
 
 //rebrà una callback function que rebrà unes opcions
@@ -86,52 +82,46 @@ cartStore.$subscribe((mutation,state)=>{
 const doingHistory=ref(false)
 history.push(JSON.stringify(cartStore.$state));
 
-const undo= ()=>{
- if (history.length===1) return
- doingHistory.value=true
- history.pop()
- cartStore.$state=JSON.parse(history.at(-1))
- doingHistory.value=false
-}
-cartStore.$subscribe((mutation,state)=>{
- if(!doingHistory.value){
-   history.push(JSON.stringify(state));
- } */
+/* cartStore.$onAction(({ name, store, args, after, onError }) => {
+  if (name === "addItems") {
+    after(() => {
+      console.log(args[0], args[1].name);
+    });
+    onError((error) => {
+      console.log("Hello error:", error.message);
+    });
+  }
+}); */
 
-/* history.push(JSON.stringify(cartStore.$state));
-const redo = () => {
-    const latestState = future.pop();
-    if (!latestState) return;
-    doingHistory.value = true;
-    history.push(latestState);
-    cartStore.$state = JSON.parse(latestState);
-    doingHistory.value = false;
-};
+/* cartStore.$subscribe((mutation, state) => {
+  console.log({ mutation });
+  console.log({ state });
+}); */
 
-cartStore.$subscribe((mutation,state)=>{
- if(!doingHistory.value){
-   history.push(JSON.stringify(state));
-   future.splice(0,future.length)
-   //no podem resetejar a zero ja que perdriem la reactivitat
- } */
+/* const addToCart = (count, product) => {
+  count = parseInt(count);
+  cartStore.$patch((state) => {
+    for (let index = 0; index < count; index++) {
+      state.items.push(product);
+    }
+  });
+}; */
 </script>
 
 <template>
     <div class="container">
         <TheHeader />
         <div class="mb-5 flex justify-end">
-            <AppButton @click="undo">Undo</AppButton>
-            <AppButton class="ml-2" @click="redo">Redo</AppButton>
+            <AppButton @click="cartStore.undo">Undo</AppButton>
+            <AppButton class="ml-2" @click="cartStore.redo">Redo</AppButton>
         </div>
-
         <ul class="sm:flex flex-wrap lg:flex-nowrap gap-5">
             <ProductCard
-                v-for="product in productStore.products"
+                v-for="product in products"
                 :key="product.name"
                 :product="product"
                 @addToCart="cartStore.addItems($event, product)"
             />
-            <!-- Definim la const productStore i remplacem aquesta al v-for del ProductCart-->
         </ul>
     </div>
 </template>

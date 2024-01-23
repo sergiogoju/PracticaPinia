@@ -8,6 +8,8 @@
 // i altres opcions que necessitem pel plugin que estem fent
 import { ref, reactive } from "vue";
 export function piniaHistoryPlugin({ pinia, app, store, options }) {
+    if (!options.historyEnabled) return;
+    //Els deixem aquí ja que es important per l'scope
     const history = reactive([]);
     const future = reactive([]);
     const doingHistory = ref(false);

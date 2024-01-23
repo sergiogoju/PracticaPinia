@@ -14,7 +14,6 @@ defineEmits(["addToCart"]);
 // data
 const count = ref(0);
 </script>
-
 <template>
     <li class="card">
         <img :src="`/images/${product.image}`" class="mb-3" width="300" />
