@@ -8,10 +8,12 @@ import { storeToRefs } from "pinia";
 // const productStore = useProductStore()
 import { useCartStore } from "@/stores/CartStore.js";
 // useProductStore();
+import { ref, reactive } from "vue";
 
 const { products } = storeToRefs(useProductStore());
 const productStore = useProductStore();
 const cartStore = useCartStore();
+/* const history=reactive([]) */
 
 /* const addToCart = (count, product) => {
     count = parseInt(count);
@@ -28,6 +30,7 @@ productStore.fill();
 //també afegim un after hook que permet executar qualsevol
 //Cosa després que l'acció retorni i resolgui,
 //onError hook per saber quan passa una excepció o falla i fer nosaltres alguna acció
+
 /* cartStore.$onAction(({ name, store, args, after, onError }) => {
     if (name === "addItems") {
         after(() => {
@@ -47,15 +50,80 @@ productStore.fill();
     }
 }); */
 
-cartStore.$subscribe((mutation, state) => {
+/* cartStore.$subscribe((mutation, state) => {
     console.log({ mutation });
     console.log({ state });
 });
+ */
+
+/* history.push(JSON.stringify(cartStore.$state));
+cartStore.$subscribe((mutation,state)=>{
+history.push(JSON.stringify(state)); */
+
+/* const undo= ()=>{
+ if (history.length===1) return
+ doingHistory.value=true
+ history.pop()
+ cartStore.$state=JSON.parse(history.at(-1))
+ doingHistory.value=false
+}
+cartStore.$subscribe((mutation,state)=>{
+ if(!doingHistory.value){
+   history.push(JSON.stringify(state));
+ }
+}) */
+
+/* const undo = () => {
+    //si la longitud és 1 només tinc l'estat inicial i, per tant, no puc fer undo
+    if (history.length === 1) return;
+    //en cas contrari trec l'últim estat de l'array i
+    history.pop();
+    //torno a l'estat anterior
+    cartStore.$state = $JSON.parse(history.at(-1));
+}; */
+
+/* const history=reactive([])
+const doingHistory=ref(false)
+history.push(JSON.stringify(cartStore.$state));
+
+const undo= ()=>{
+ if (history.length===1) return
+ doingHistory.value=true
+ history.pop()
+ cartStore.$state=JSON.parse(history.at(-1))
+ doingHistory.value=false
+}
+cartStore.$subscribe((mutation,state)=>{
+ if(!doingHistory.value){
+   history.push(JSON.stringify(state));
+ } */
+
+/* history.push(JSON.stringify(cartStore.$state));
+const redo = () => {
+    const latestState = future.pop();
+    if (!latestState) return;
+    doingHistory.value = true;
+    history.push(latestState);
+    cartStore.$state = JSON.parse(latestState);
+    doingHistory.value = false;
+};
+
+cartStore.$subscribe((mutation,state)=>{
+ if(!doingHistory.value){
+   history.push(JSON.stringify(state));
+   future.splice(0,future.length)
+   //no podem resetejar a zero ja que perdriem la reactivitat
+ } */
 </script>
 
 <template>
     <div class="container">
         <TheHeader />
+        <div class="mb-5 flex justify-end">
+            <AppButton @click="undo">Undo</AppButton>
+            <AppButton class="ml-2" @click="redo">Redo</AppButton>
+        </div>
+
         <ul class="sm:flex flex-wrap lg:flex-nowrap gap-5">
             <ProductCard
                 v-for="product in productStore.products"

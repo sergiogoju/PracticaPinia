@@ -16,7 +16,7 @@ export const useCartStore = defineStore("CartStore", {
                 this.items.push({ ...item });
             }
         },
-        /* addItems(count, item) {
+        /*      addItems(count, item) {
             throw new Error("example error");
             count = parseInt(count);
             for (let index = 0; index < count; index++) {
@@ -24,6 +24,7 @@ export const useCartStore = defineStore("CartStore", {
                 //this.items.push(item);
             }
         }, */
+
         checkout() {
             const authUserStore = useAuthUserStore();
 
