@@ -39,7 +39,11 @@ const active = ref(false);
                 </div>
                 <div class="flex justify-end">
                     <AppButton class="secondary mr-2">Clear Cart</AppButton>
-                    <AppButton class="primary">Checkout</AppButton>
+                    <AppButton
+                        @click="() => cartStore.checkout()"
+                        class="primary"
+                        >Checkout</AppButton
+                    >
                 </div>
             </div>
             <!-- Uncomment and use condition to show when cart is empty -->

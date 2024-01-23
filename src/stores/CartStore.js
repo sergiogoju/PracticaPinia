@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore, acceptHMRUpdate } from "pinia";
 import { parse } from "postcss";
 import { groupBy } from "lodash";
 
@@ -16,6 +16,13 @@ export const useCartStore = defineStore("CartStore", {
                 this.items.push({ ...item });
             }
         },
+        checkout() {
+            const authUserStore = useAuthUserStore();
+
+            alert(
+                `${authUserStore.username} name just bought ${this.count} items at a total of $${this.total}`
+            );
+        },
     },
     getters: {
         /* count() {
@@ -29,3 +36,7 @@ export const useCartStore = defineStore("CartStore", {
         grouped: (state) => groupBy(state.items, (item) => item.name),
     },
 });
+
+if (import.meta.hot) {
+    import.meta.hot.accept(acceptHMRUpdate(useCartStore, import.meta.hot));
+}
